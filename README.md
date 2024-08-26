@@ -1,2 +1,2 @@
 # SQL_Leetcode
-MS SQL bits for Leeticode problems
+MS SQL bits for Leetcode problems
