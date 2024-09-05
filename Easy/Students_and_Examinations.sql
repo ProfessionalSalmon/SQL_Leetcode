@@ -1,26 +1,17 @@
-WITH count_exam AS (
-    SELECT
-        student_id,
-        subject_name,
-        COUNT(subject_name) AS attended_exams
-    FROM
-        Examinations
-    GROUP BY
-        student_id,
-        subject_name
-)
 SELECT
     st.student_id,
     st.student_name,
     s.subject_name,
-    COALESCE(attended_exams, 0) AS attended_exams
+    COUNT(e.subject_name) AS attended_exams
 FROM
     Students st
     CROSS JOIN Subjects s
-    LEFT JOIN count_exam c ON (
-        st.student_id = c.student_id
-        AND s.subject_name = c.subject_name
-    )
+    LEFT JOIN Examinations e ON st.student_id = e.student_id
+    AND s.subject_name = e.subject_name
+GROUP BY
+    st.student_id,
+    st.student_name,
+    s.subject_name
 ORDER BY
-    student_id,
-    subject_name;
+    st.student_id,
+    s.subject_name;
