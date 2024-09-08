@@ -1,25 +1,22 @@
-WITH salary_order AS (
+WITH t1 AS (
     SELECT
-        name,
-        salary,
-        departmentID,
+        d.name AS Department,
+        e.name AS Employee,
+        salary AS Salary,
         DENSE_RANK() OVER (
-            partition by departmentID
+            PARTITION BY d.name
             ORDER BY
                 salary DESC
-        ) AS rank
+        ) AS dense_rank
     FROM
-        Employee
+        Employee e
+        LEFT JOIN Department d ON e.departmentId = d.id
 )
 SELECT
-    d.name AS Department,
-    s.name AS Employee,
-    salary AS Salary
+    Department,
+    Employee,
+    Salary
 FROM
-    Department d
-    JOIN salary_order s ON departmentID = id
+    t1
 WHERE
-    rank <= 3
-ORDER BY
-    d.name,
-    salary DESC;
+    dense_rank <= 3;
