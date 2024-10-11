@@ -1,37 +1,27 @@
--- if you don't know what DENSE_RANK() is and you don't wanna know
+-- use DISTINCT to remove duplicate salary
 
-WITH t0 AS (
+WITH t1 AS (
+    SELECT
+        null AS salary
+    UNION
     SELECT
         DISTINCT salary
     FROM
         Employee
 ),
-t1 AS (
+t2 AS (
     SELECT
-        salary,
-        (
-            ROW_NUMBER() OVER (
-                ORDER BY
-                    salary DESC
-            )
-        ) AS row_number
+        *,
+        ROW_NUMBER() OVER (
+            ORDER BY
+                salary DESC
+        ) AS row
     FROM
-        t0
+        t1
 )
 SELECT
-    TOP 1 SecondHighestSalary
+    salary AS SecondHighestSalary
 FROM
-    (
-        SELECT
-            DISTINCT t1.salary AS SecondHighestSalary
-        FROM
-            t1
-            JOIN Employee e ON t1.salary = e.salary
-        WHERE
-            row_number = 2
-        UNION
-        SELECT
-            null
-    ) AS t2
-ORDER BY
-    SecondHighestSalary DESC;
+    t2
+WHERE
+    row = 2;
