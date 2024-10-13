@@ -1,3 +1,4 @@
+-- Top User
 WITH t1 AS (
     SELECT
         TOP 1 name AS results
@@ -10,6 +11,8 @@ WITH t1 AS (
         COUNT(*) DESC,
         name
 ),
+
+-- Top movie
 t2 AS (
     SELECT
         TOP 1 title AS results

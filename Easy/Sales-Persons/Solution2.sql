@@ -13,4 +13,4 @@ WHERE
             JOIN Orders o ON c.com_id = o.com_id
         WHERE
             name = 'RED'
-    )
+    );
